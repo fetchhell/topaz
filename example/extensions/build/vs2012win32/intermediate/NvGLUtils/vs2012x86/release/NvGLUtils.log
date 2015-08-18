@@ -1,0 +1,28 @@
+﻿Build started 18.08.2015 10:25:58.
+     1>Project "D:\Topaz\to_redmine\example\extensions\build\vs2012win32\NvGLUtils.vcxproj" on node 4 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./../../src/NvGLUtils /I./../../include /I./../../externals/include/GLFW /Zi /nologo /W3 /WX /Od /Oi /Oy- /D WIN32 /D _WIN32 /D _LIB /D _DEBUG /D PROFILE /D _ITERATOR_DEBUG_LEVEL=0 /Gm- /EHsc /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"./intermediate/NvGLUtils/vs2012x86/release/" /Fd"./intermediate/NvGLUtils/vs2012x86/release/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt /Oy- /EHsc /wd4748 /wd4100 /wd4201 ..\..\src\NvGLUtils\BlockDXT.cpp ..\..\src\NvGLUtils\ColorBlock.cpp ..\..\src\NvGLUtils\NvFilePtr.cpp ..\..\src\NvGLUtils\NvGLSLProgram.cpp ..\..\src\NvGLUtils\NvImage.cpp ..\..\src\NvGLUtils\NvImageDDS.cpp ..\..\src\NvGLUtils\NvImageGL.cpp ..\..\src\NvGLUtils\NvTimers.cpp
+         BlockDXT.cpp
+         ColorBlock.cpp
+         NvFilePtr.cpp
+         NvGLSLProgram.cpp
+         NvImage.cpp
+         NvImageDDS.cpp
+         NvImageGL.cpp
+         NvTimers.cpp
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"./../../lib/vs2012x86\libNvGLUtilsD.lib" /NOLOGO /MACHINE:X86 /MACHINE:x86 /SUBSYSTEM:WINDOWS /NOLOGO ./intermediate/NvGLUtils/vs2012x86/release/BlockDXT.obj
+         ./intermediate/NvGLUtils/vs2012x86/release/ColorBlock.obj
+         ./intermediate/NvGLUtils/vs2012x86/release/NvFilePtr.obj
+         ./intermediate/NvGLUtils/vs2012x86/release/NvGLSLProgram.obj
+         ./intermediate/NvGLUtils/vs2012x86/release/NvImage.obj
+         ./intermediate/NvGLUtils/vs2012x86/release/NvImageDDS.obj
+         ./intermediate/NvGLUtils/vs2012x86/release/NvImageGL.obj
+         ./intermediate/NvGLUtils/vs2012x86/release/NvTimers.obj
+         NvGLUtils.vcxproj -> D:\Topaz\to_redmine\example\extensions\build\vs2012win32\./../../lib/vs2012x86\libNvGLUtilsD.lib
+     1>Done Building Project "D:\Topaz\to_redmine\example\extensions\build\vs2012win32\NvGLUtils.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:06.41

@@ -1,0 +1,13 @@
+﻿Build started 18.08.2015 10:25:58.
+     1>Project "D:\Topaz\to_redmine\example\extensions\externals\build\vs2012win32\R3.vcxproj" on node 8 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./../../src/R3 /I./../../include /Zi /nologo /W3 /WX- /Od /Oi /Oy- /D WIN32 /D _WIN32 /D _LIB /D _DEBUG /D PROFILE /D _ITERATOR_DEBUG_LEVEL=0 /Gm- /EHsc /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"./intermediate/R3/vs2012x86/release/" /Fd"./intermediate/R3/vs2012x86/release/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt /Oy- /EHsc /wd4748 /wd4995 /wd4390 /wd4100 /wd4201 ..\..\src\R3\thread.cpp
+         thread.cpp
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"./../../lib/vs2012x86\R3D.lib" /NOLOGO /MACHINE:X86 /MACHINE:x86 /SUBSYSTEM:WINDOWS /NOLOGO ./intermediate/R3/vs2012x86/release/thread.obj
+         R3.vcxproj -> D:\Topaz\to_redmine\example\extensions\externals\build\vs2012win32\./../../lib/vs2012x86\R3D.lib
+     1>Done Building Project "D:\Topaz\to_redmine\example\extensions\externals\build\vs2012win32\R3.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.73

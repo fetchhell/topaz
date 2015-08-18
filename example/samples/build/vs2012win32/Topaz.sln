@@ -1,0 +1,119 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Topaz", "Topaz.vcxproj", "{0E0CDD74-AA80-11FB-4CD0-549892A2D740}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7B07CE8A-72CE-1F32-5039-88C256EA7899} = {7B07CE8A-72CE-1F32-5039-88C256EA7899}
+		{60297368-40D0-A29B-A2C0-714841945DE0} = {60297368-40D0-A29B-A2C0-714841945DE0}
+		{1B5408AA-9214-FCC0-3C5C-59B660C07A08} = {1B5408AA-9214-FCC0-3C5C-59B660C07A08}
+		{73279F07-FECB-C33E-5ACB-FBDD1A77A728} = {73279F07-FECB-C33E-5ACB-FBDD1A77A728}
+		{6826558F-EF03-0A5E-6628-D07363F5E6A0} = {6826558F-EF03-0A5E-6628-D07363F5E6A0}
+		{B5177C03-109A-A80C-DD16-0727FA44BFF3} = {B5177C03-109A-A80C-DD16-0727FA44BFF3}
+		{6209A624-E0C4-3EB2-EEE2-E7B434B0E876} = {6209A624-E0C4-3EB2-EEE2-E7B434B0E876}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NvAppBase", "./../../../extensions/build/vs2012win32/NvAppBase.vcxproj", "{60297368-40D0-A29B-A2C0-714841945DE0}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NvModel", "./../../../extensions/build/vs2012win32/NvModel.vcxproj", "{B5177C03-109A-A80C-DD16-0727FA44BFF3}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NvGLUtils", "./../../../extensions/build/vs2012win32/NvGLUtils.vcxproj", "{6826558F-EF03-0A5E-6628-D07363F5E6A0}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NvGamepad", "./../../../extensions/build/vs2012win32/NvGamepad.vcxproj", "{73279F07-FECB-C33E-5ACB-FBDD1A77A728}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NvAssetLoader", "./../../../extensions/build/vs2012win32/NvAssetLoader.vcxproj", "{1B5408AA-9214-FCC0-3C5C-59B660C07A08}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NvUI", "./../../../extensions/build/vs2012win32/NvUI.vcxproj", "{6209A624-E0C4-3EB2-EEE2-E7B434B0E876}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Half", "./../../../extensions/externals/build/vs2012win32/Half.vcxproj", "{7B07CE8A-72CE-1F32-5039-88C256EA7899}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "R3", "./../../../extensions/externals/build/vs2012win32/R3.vcxproj", "{85031F51-B83F-5A7E-EDCC-99B7163A8CA6}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cg4cpp", "./../../../extensions/externals/build/vs2012win32/cg4cpp.vcxproj", "{4112EB99-6B21-D171-D292-424A65BE95A6}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "./../../../extensions/externals/build/vs2012win32/freetype.vcxproj", "{642095FC-E850-EAF3-5BD0-1D3C1A433B44}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "harfbuzz", "./../../../extensions/externals/build/vs2012win32/harfbuzz.vcxproj", "{6C20DB90-DE20-DEF8-A218-18101451DE10}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		debug|Win32 = debug|Win32
+		release|Win32 = release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E0CDD74-AA80-11FB-4CD0-549892A2D740}.debug|Win32.ActiveCfg = debug|Win32
+		{0E0CDD74-AA80-11FB-4CD0-549892A2D740}.debug|Win32.Build.0 = debug|Win32
+		{0E0CDD74-AA80-11FB-4CD0-549892A2D740}.release|Win32.ActiveCfg = release|Win32
+		{0E0CDD74-AA80-11FB-4CD0-549892A2D740}.release|Win32.Build.0 = release|Win32
+		{60297368-40D0-A29B-A2C0-714841945DE0}.debug|Win32.ActiveCfg = debug|Win32
+		{60297368-40D0-A29B-A2C0-714841945DE0}.debug|Win32.Build.0 = debug|Win32
+		{60297368-40D0-A29B-A2C0-714841945DE0}.release|Win32.ActiveCfg = release|Win32
+		{60297368-40D0-A29B-A2C0-714841945DE0}.release|Win32.Build.0 = release|Win32
+		{B5177C03-109A-A80C-DD16-0727FA44BFF3}.debug|Win32.ActiveCfg = debug|Win32
+		{B5177C03-109A-A80C-DD16-0727FA44BFF3}.debug|Win32.Build.0 = debug|Win32
+		{B5177C03-109A-A80C-DD16-0727FA44BFF3}.release|Win32.ActiveCfg = release|Win32
+		{B5177C03-109A-A80C-DD16-0727FA44BFF3}.release|Win32.Build.0 = release|Win32
+		{6826558F-EF03-0A5E-6628-D07363F5E6A0}.debug|Win32.ActiveCfg = debug|Win32
+		{6826558F-EF03-0A5E-6628-D07363F5E6A0}.debug|Win32.Build.0 = debug|Win32
+		{6826558F-EF03-0A5E-6628-D07363F5E6A0}.release|Win32.ActiveCfg = release|Win32
+		{6826558F-EF03-0A5E-6628-D07363F5E6A0}.release|Win32.Build.0 = release|Win32
+		{73279F07-FECB-C33E-5ACB-FBDD1A77A728}.debug|Win32.ActiveCfg = debug|Win32
+		{73279F07-FECB-C33E-5ACB-FBDD1A77A728}.debug|Win32.Build.0 = debug|Win32
+		{73279F07-FECB-C33E-5ACB-FBDD1A77A728}.release|Win32.ActiveCfg = release|Win32
+		{73279F07-FECB-C33E-5ACB-FBDD1A77A728}.release|Win32.Build.0 = release|Win32
+		{1B5408AA-9214-FCC0-3C5C-59B660C07A08}.debug|Win32.ActiveCfg = debug|Win32
+		{1B5408AA-9214-FCC0-3C5C-59B660C07A08}.debug|Win32.Build.0 = debug|Win32
+		{1B5408AA-9214-FCC0-3C5C-59B660C07A08}.release|Win32.ActiveCfg = release|Win32
+		{1B5408AA-9214-FCC0-3C5C-59B660C07A08}.release|Win32.Build.0 = release|Win32
+		{6209A624-E0C4-3EB2-EEE2-E7B434B0E876}.debug|Win32.ActiveCfg = debug|Win32
+		{6209A624-E0C4-3EB2-EEE2-E7B434B0E876}.debug|Win32.Build.0 = debug|Win32
+		{6209A624-E0C4-3EB2-EEE2-E7B434B0E876}.release|Win32.ActiveCfg = release|Win32
+		{6209A624-E0C4-3EB2-EEE2-E7B434B0E876}.release|Win32.Build.0 = release|Win32
+		{7B07CE8A-72CE-1F32-5039-88C256EA7899}.debug|Win32.ActiveCfg = debug|Win32
+		{7B07CE8A-72CE-1F32-5039-88C256EA7899}.debug|Win32.Build.0 = debug|Win32
+		{7B07CE8A-72CE-1F32-5039-88C256EA7899}.release|Win32.ActiveCfg = release|Win32
+		{7B07CE8A-72CE-1F32-5039-88C256EA7899}.release|Win32.Build.0 = release|Win32
+		{85031F51-B83F-5A7E-EDCC-99B7163A8CA6}.debug|Win32.ActiveCfg = debug|Win32
+		{85031F51-B83F-5A7E-EDCC-99B7163A8CA6}.debug|Win32.Build.0 = debug|Win32
+		{85031F51-B83F-5A7E-EDCC-99B7163A8CA6}.release|Win32.ActiveCfg = release|Win32
+		{85031F51-B83F-5A7E-EDCC-99B7163A8CA6}.release|Win32.Build.0 = release|Win32
+		{4112EB99-6B21-D171-D292-424A65BE95A6}.debug|Win32.ActiveCfg = debug|Win32
+		{4112EB99-6B21-D171-D292-424A65BE95A6}.debug|Win32.Build.0 = debug|Win32
+		{4112EB99-6B21-D171-D292-424A65BE95A6}.release|Win32.ActiveCfg = release|Win32
+		{4112EB99-6B21-D171-D292-424A65BE95A6}.release|Win32.Build.0 = release|Win32
+		{642095FC-E850-EAF3-5BD0-1D3C1A433B44}.debug|Win32.ActiveCfg = debug|Win32
+		{642095FC-E850-EAF3-5BD0-1D3C1A433B44}.debug|Win32.Build.0 = debug|Win32
+		{642095FC-E850-EAF3-5BD0-1D3C1A433B44}.release|Win32.ActiveCfg = release|Win32
+		{642095FC-E850-EAF3-5BD0-1D3C1A433B44}.release|Win32.Build.0 = release|Win32
+		{6C20DB90-DE20-DEF8-A218-18101451DE10}.debug|Win32.ActiveCfg = debug|Win32
+		{6C20DB90-DE20-DEF8-A218-18101451DE10}.debug|Win32.Build.0 = debug|Win32
+		{6C20DB90-DE20-DEF8-A218-18101451DE10}.release|Win32.ActiveCfg = release|Win32
+		{6C20DB90-DE20-DEF8-A218-18101451DE10}.release|Win32.Build.0 = release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddins) = postSolution
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal

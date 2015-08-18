@@ -1,0 +1,92 @@
+﻿Build started 18.08.2015 10:26:00.
+     1>Project "D:\Topaz\to_redmine\example\extensions\externals\build\vs2012win32\freetype.vcxproj" on node 4 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"./../../src/freetype-2.4.9/include" /I"./../../src/freetype-2.4.9/src" /I./../../include /Zi /nologo /W3 /WX- /Od /Oi /Oy- /D FT2_BUILD_LIBRARY /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WIN32 /D _LIB /D _DEBUG /D PROFILE /D _ITERATOR_DEBUG_LEVEL=0 /Gm- /EHsc /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"./intermediate/freetype/vs2012x86/release/" /Fd"./intermediate/freetype/vs2012x86/release/vc120.pdb" /Gd /TC /analyze- /errorReport:prompt /Oy- /EHsc /wd4748 /wd4995 /wd4390 /wd4100 /wd4201 "..\..\src\freetype-2.4.9\src\autofit\autofit.c" "..\..\src\freetype-2.4.9\src\bdf\bdf.c" "..\..\src\freetype-2.4.9\src\cff\cff.c" "..\..\src\freetype-2.4.9\src\base\ftbase.c" "..\..\src\freetype-2.4.9\src\base\ftbitmap.c" "..\..\src\freetype-2.4.9\src\base\ftdebug.c" "..\..\src\freetype-2.4.9\src\base\ftfstype.c" "..\..\src\freetype-2.4.9\src\base\ftgasp.c" "..\..\src\freetype-2.4.9\src\base\ftglyph.c" "..\..\src\freetype-2.4.9\src\base\ftinit.c" "..\..\src\freetype-2.4.9\src\base\ftstroke.c" "..\..\src\freetype-2.4.9\src\base\ftsystem.c" "..\..\src\freetype-2.4.9\src\base\ftbbox.c" "..\..\src\freetype-2.4.9\src\base\ftgxval.c" "..\..\src\freetype-2.4.9\src\base\ftlcdfil.c" "..\..\src\freetype-2.4.9\src\base\ftmm.c" "..\..\src\freetype-2.4.9\src\base\ftotval.c" "..\..\src\freetype-2.4.9\src\base\ftpatent.c" "..\..\src\freetype-2.4.9\src\base\ftpfr.c" "..\..\src\freetype-2.4.9\src\base\ftsynth.c" "..\..\src\freetype-2.4.9\src\base\fttype1.c" "..\..\src\freetype-2.4.9\src\base\ftwinfnt.c" "..\..\src\freetype-2.4.9\src\base\ftxf86.c" "..\..\src\freetype-2.4.9\src\cache\ftcache.c" "..\..\src\freetype-2.4.9\src\gzip\ftgzip.c" "..\..\src\freetype-2.4.9\src\lzw\ftlzw.c" "..\..\src\freetype-2.4.9\src\smooth\smooth.c" "..\..\src\freetype-2.4.9\src\pcf\pcf.c" "..\..\src\freetype-2.4.9\src\pfr\pfr.c" "..\..\src\freetype-2.4.9\src\psaux\psaux.c" "..\..\src\freetype-2.4.9\src\pshinter\pshinter.c" "..\..\src\freetype-2.4.9\src\psnames\psmodule.c" "..\..\src\freetype-2.4.9\src\raster\raster.c" "..\..\src\freetype-2.4.9\src\sfnt\sfnt.c" "..\..\src\freetype-2.4.9\src\truetype\truetype.c" "..\..\src\freetype-2.4.9\src\type1\type1.c" "..\..\src\freetype-2.4.9\src\cid\type1cid.c" "..\..\src\freetype-2.4.9\src\type42\type42.c" "..\..\src\freetype-2.4.9\src\winfonts\winfnt.c"
+         autofit.c
+         bdf.c
+         cff.c
+         ftbase.c
+         ftbitmap.c
+         ftdebug.c
+         ftfstype.c
+         ftgasp.c
+         ftglyph.c
+         ftinit.c
+         ftstroke.c
+         ftsystem.c
+         ftbbox.c
+         ftgxval.c
+         ftlcdfil.c
+         ftmm.c
+         ftotval.c
+         ftpatent.c
+         ftpfr.c
+         ftsynth.c
+         Generating Code...
+         Compiling...
+         fttype1.c
+         ftwinfnt.c
+         ftxf86.c
+         ftcache.c
+         ftgzip.c
+         ftlzw.c
+         smooth.c
+         pcf.c
+         pfr.c
+         psaux.c
+         pshinter.c
+         psmodule.c
+         raster.c
+         sfnt.c
+         truetype.c
+         type1.c
+         type1cid.c
+         type42.c
+         winfnt.c
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"./../../lib/vs2012x86\freetypeD.lib" /NOLOGO /MACHINE:X86 /MACHINE:x86 /SUBSYSTEM:WINDOWS /NOLOGO ./intermediate/freetype/vs2012x86/release/autofit.obj
+         ./intermediate/freetype/vs2012x86/release/bdf.obj
+         ./intermediate/freetype/vs2012x86/release/cff.obj
+         ./intermediate/freetype/vs2012x86/release/ftbase.obj
+         ./intermediate/freetype/vs2012x86/release/ftbitmap.obj
+         ./intermediate/freetype/vs2012x86/release/ftdebug.obj
+         ./intermediate/freetype/vs2012x86/release/ftfstype.obj
+         ./intermediate/freetype/vs2012x86/release/ftgasp.obj
+         ./intermediate/freetype/vs2012x86/release/ftglyph.obj
+         ./intermediate/freetype/vs2012x86/release/ftinit.obj
+         ./intermediate/freetype/vs2012x86/release/ftstroke.obj
+         ./intermediate/freetype/vs2012x86/release/ftsystem.obj
+         ./intermediate/freetype/vs2012x86/release/ftbbox.obj
+         ./intermediate/freetype/vs2012x86/release/ftgxval.obj
+         ./intermediate/freetype/vs2012x86/release/ftlcdfil.obj
+         ./intermediate/freetype/vs2012x86/release/ftmm.obj
+         ./intermediate/freetype/vs2012x86/release/ftotval.obj
+         ./intermediate/freetype/vs2012x86/release/ftpatent.obj
+         ./intermediate/freetype/vs2012x86/release/ftpfr.obj
+         ./intermediate/freetype/vs2012x86/release/ftsynth.obj
+         ./intermediate/freetype/vs2012x86/release/fttype1.obj
+         ./intermediate/freetype/vs2012x86/release/ftwinfnt.obj
+         ./intermediate/freetype/vs2012x86/release/ftxf86.obj
+         ./intermediate/freetype/vs2012x86/release/ftcache.obj
+         ./intermediate/freetype/vs2012x86/release/ftgzip.obj
+         ./intermediate/freetype/vs2012x86/release/ftlzw.obj
+         ./intermediate/freetype/vs2012x86/release/smooth.obj
+         ./intermediate/freetype/vs2012x86/release/pcf.obj
+         ./intermediate/freetype/vs2012x86/release/pfr.obj
+         ./intermediate/freetype/vs2012x86/release/psaux.obj
+         ./intermediate/freetype/vs2012x86/release/pshinter.obj
+         ./intermediate/freetype/vs2012x86/release/psmodule.obj
+         ./intermediate/freetype/vs2012x86/release/raster.obj
+         ./intermediate/freetype/vs2012x86/release/sfnt.obj
+         ./intermediate/freetype/vs2012x86/release/truetype.obj
+         ./intermediate/freetype/vs2012x86/release/type1.obj
+         ./intermediate/freetype/vs2012x86/release/type1cid.obj
+         ./intermediate/freetype/vs2012x86/release/type42.obj
+         ./intermediate/freetype/vs2012x86/release/winfnt.obj
+         freetype.vcxproj -> D:\Topaz\to_redmine\example\extensions\externals\build\vs2012win32\./../../lib/vs2012x86\freetypeD.lib
+     1>Done Building Project "D:\Topaz\to_redmine\example\extensions\externals\build\vs2012win32\freetype.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.28

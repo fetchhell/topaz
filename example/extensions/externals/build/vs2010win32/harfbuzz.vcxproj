@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="debug|Win32">
+			<Configuration>debug</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="release|Win32">
+			<Configuration>release</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+	<PropertyGroup Label="Globals">
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|Win32'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<GenerateManifest>false</GenerateManifest>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|Win32'" Label="Configuration">
+		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<GenerateManifest>false</GenerateManifest>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+	<ImportGroup Label="ExtensionSettings">
+	</ImportGroup>
+	<ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='debug|Win32'">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+	</ImportGroup>
+	<ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='release|Win32'">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+	</ImportGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug|Win32'">
+		<OutDir>./../../lib/vs2010x86\</OutDir>
+		<IntDir>./intermediate/harfbuzz/vs2010x86/release/</IntDir>
+		<TargetExt>.lib</TargetExt>
+		<TargetName>harfbuzzD</TargetName>
+		<CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRules />
+		<CodeAnalysisRuleAssemblies />
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug|Win32'">
+		<ClCompile>
+			<CallingConvention>Cdecl</CallingConvention>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<SuppressStartupBanner>true</SuppressStartupBanner>
+			<FloatingPointModel>Fast</FloatingPointModel>
+			<AdditionalOptions>/wd4800 /wd4018 /wd4244 /wd4805 /wd4146 /Oy- /EHsc /wd4748 /wd4995 /wd4390 /wd4100 /wd4201</AdditionalOptions>
+			<Optimization>Disabled</Optimization>
+			<AdditionalIncludeDirectories>./../../src/harfbuzz/src;./../../src/harfbuzz/config/win32;./../../src/harfbuzz/src/hb-ucdn;./../../src/freetype-2.4.9/include;./../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_WIN32;_LIB;_DEBUG;PROFILE;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<WarningLevel>Level3</WarningLevel>
+			<RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+			<PrecompiledHeaderFile></PrecompiledHeaderFile>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+		</ClCompile>
+		<Lib>
+			<AdditionalOptions>/MACHINE:x86 /SUBSYSTEM:WINDOWS /NOLOGO</AdditionalOptions>
+			<AdditionalDependencies>Usp10.lib;Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<OutputFile>$(OutDir)harfbuzzD.lib</OutputFile>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<ProgramDatabaseFile>$(OutDir)/harfbuzzD.lib.pdb</ProgramDatabaseFile>
+			<TargetMachine>MachineX86</TargetMachine>
+		</Lib>
+		<ResourceCompile>
+		</ResourceCompile>
+		<ProjectReference>
+			<LinkLibraryDependencies>true</LinkLibraryDependencies>
+		</ProjectReference>
+	</ItemDefinitionGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='release|Win32'">
+		<OutDir>./../../lib/vs2010x86\</OutDir>
+		<IntDir>./intermediate/harfbuzz/vs2010x86/release/</IntDir>
+		<TargetExt>.lib</TargetExt>
+		<TargetName>harfbuzz</TargetName>
+		<CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRules />
+		<CodeAnalysisRuleAssemblies />
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release|Win32'">
+		<ClCompile>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<SuppressStartupBanner>true</SuppressStartupBanner>
+			<FloatingPointModel>Fast</FloatingPointModel>
+			<AdditionalOptions>/wd4800 /wd4018 /wd4244 /wd4805 /wd4146 /Oy- /EHsc /wd4748 /wd4995 /wd4390 /wd4100 /wd4201</AdditionalOptions>
+			<Optimization>Disabled</Optimization>
+			<AdditionalIncludeDirectories>./../../src/harfbuzz/src;./../../src/harfbuzz/config/win32;./../../src/harfbuzz/src/hb-ucdn;./../../src/freetype-2.4.9/include;./../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_WIN32;_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<WarningLevel>Level3</WarningLevel>
+			<RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+			<PrecompiledHeaderFile></PrecompiledHeaderFile>
+		</ClCompile>
+		<Lib>
+			<AdditionalOptions>/MACHINE:x86 /SUBSYSTEM:WINDOWS /NOLOGO</AdditionalOptions>
+			<AdditionalDependencies>Usp10.lib;Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<OutputFile>$(OutDir)harfbuzz.lib</OutputFile>
+			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+			<ProgramDatabaseFile>$(OutDir)/harfbuzz.lib.pdb</ProgramDatabaseFile>
+			<TargetMachine>MachineX86</TargetMachine>
+		</Lib>
+		<ResourceCompile>
+		</ResourceCompile>
+		<ProjectReference>
+			<LinkLibraryDependencies>true</LinkLibraryDependencies>
+		</ProjectReference>
+	</ItemDefinitionGroup>
+	<ItemGroup>
+		<ClCompile Include="..\..\src\ucdn\ucdn.c">
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+	</ItemGroup>
+	<ItemGroup>
+	</ItemGroup>
+	<ItemGroup>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-uniscribe.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-blob.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-buffer-serialize.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-buffer.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-common.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-face.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-fallback-shape.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-font.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ft.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-layout.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-map.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-arabic.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-default.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-indic-table.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-indic.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-myanmar.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-sea.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-thai.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-shape-fallback.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-shape-normalize.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-shape.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ot-tag.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-set.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-shape-plan.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-shape.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-shaper.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-tt-font.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-unicode.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-warning.cc">
+		</ClCompile>
+		<ClCompile Include="..\..\src\harfbuzz\src\hb-ucdn.cc">
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\src\harfbuzz\src\hb-atomic-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-blob.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-buffer-deserialize-json.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-buffer-deserialize-text.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-buffer-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-buffer.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-cache-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-common.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-coretext.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-deprecated.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-face-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-face.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-font-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-font.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-ft.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-glib.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-gobject-enums.h.tmpl">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-gobject-structs.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-gobject.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-graphite2.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-icu.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-mutex-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-object-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-open-file-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-open-type-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-head-table.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-hhea-table.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-hmtx-table.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-layout-common-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-layout-gdef-table.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-layout-gpos-table.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-layout-gsub-table.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-layout-gsubgpos-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-layout-jstf-table.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-layout-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-ot-layout.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-map-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-maxp-table.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-name-table.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-arabic-fallback.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-arabic-table.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-indic-machine.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-indic-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-myanmar-machine.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-shape-complex-sea-machine.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-shape-fallback-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-shape-normalize-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-ot-shape-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-ot-tag.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-ot.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-set-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-set.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-shape-plan-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-shape-plan.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-shape.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-shaper-impl-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-shaper-list.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-shaper-private.hh">
+		</None>
+		<None Include="..\..\src\harfbuzz\src\hb-unicode-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-unicode.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-uniscribe.h">
+		</ClInclude>
+		<None Include="..\..\src\harfbuzz\src\hb-utf-private.hh">
+		</None>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb-version.h">
+		</ClInclude>
+		<ClInclude Include="..\..\src\harfbuzz\src\hb.h">
+		</ClInclude>
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+	<ImportGroup Label="ExtensionTargets"></ImportGroup>
+</Project>

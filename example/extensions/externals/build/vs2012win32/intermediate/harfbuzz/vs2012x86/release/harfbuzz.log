@@ -1,0 +1,79 @@
+﻿Build started 18.08.2015 10:26:00.
+     1>Project "D:\Topaz\to_redmine\example\extensions\externals\build\vs2012win32\harfbuzz.vcxproj" on node 5 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./../../src/harfbuzz/src /I./../../src/harfbuzz/config/win32 /I"./../../src/harfbuzz/src/hb-ucdn" /I"./../../src/freetype-2.4.9/include" /I./../../include /Zi /nologo /W3 /WX- /Od /Oi /Oy- /D HAVE_CONFIG_H /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_DEPRECATE /D WIN32 /D _WIN32 /D _LIB /D _DEBUG /D PROFILE /D _ITERATOR_DEBUG_LEVEL=0 /Gm- /EHsc /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"./intermediate/harfbuzz/vs2012x86/release/" /Fd"./intermediate/harfbuzz/vs2012x86/release/vc120.pdb" /Gd /TC /analyze- /errorReport:prompt /wd4800 /wd4018 /wd4244 /wd4805 /wd4146 /Oy- /EHsc /wd4748 /wd4995 /wd4390 /wd4100 /wd4201 ..\..\src\ucdn\ucdn.c
+         ucdn.c
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./../../src/harfbuzz/src /I./../../src/harfbuzz/config/win32 /I"./../../src/harfbuzz/src/hb-ucdn" /I"./../../src/freetype-2.4.9/include" /I./../../include /Zi /nologo /W3 /WX- /Od /Oi /Oy- /D HAVE_CONFIG_H /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_DEPRECATE /D WIN32 /D _WIN32 /D _LIB /D _DEBUG /D PROFILE /D _ITERATOR_DEBUG_LEVEL=0 /Gm- /EHsc /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"./intermediate/harfbuzz/vs2012x86/release/" /Fd"./intermediate/harfbuzz/vs2012x86/release/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt /wd4800 /wd4018 /wd4244 /wd4805 /wd4146 /Oy- /EHsc /wd4748 /wd4995 /wd4390 /wd4100 /wd4201 "..\..\src\harfbuzz\src\hb-uniscribe.cc" "..\..\src\harfbuzz\src\hb-blob.cc" "..\..\src\harfbuzz\src\hb-buffer-serialize.cc" "..\..\src\harfbuzz\src\hb-buffer.cc" "..\..\src\harfbuzz\src\hb-common.cc" "..\..\src\harfbuzz\src\hb-face.cc" "..\..\src\harfbuzz\src\hb-fallback-shape.cc" "..\..\src\harfbuzz\src\hb-font.cc" "..\..\src\harfbuzz\src\hb-ft.cc" "..\..\src\harfbuzz\src\hb-ot-layout.cc" "..\..\src\harfbuzz\src\hb-ot-map.cc" "..\..\src\harfbuzz\src\hb-ot-shape-complex-arabic.cc" "..\..\src\harfbuzz\src\hb-ot-shape-complex-default.cc" "..\..\src\harfbuzz\src\hb-ot-shape-complex-indic-table.cc" "..\..\src\harfbuzz\src\hb-ot-shape-complex-indic.cc" "..\..\src\harfbuzz\src\hb-ot-shape-complex-myanmar.cc" "..\..\src\harfbuzz\src\hb-ot-shape-complex-sea.cc" "..\..\src\harfbuzz\src\hb-ot-shape-complex-thai.cc" "..\..\src\harfbuzz\src\hb-ot-shape-fallback.cc" "..\..\src\harfbuzz\src\hb-ot-shape-normalize.cc" "..\..\src\harfbuzz\src\hb-ot-shape.cc" "..\..\src\harfbuzz\src\hb-ot-tag.cc" "..\..\src\harfbuzz\src\hb-set.cc" "..\..\src\harfbuzz\src\hb-shape-plan.cc" "..\..\src\harfbuzz\src\hb-shape.cc" "..\..\src\harfbuzz\src\hb-shaper.cc" "..\..\src\harfbuzz\src\hb-tt-font.cc" "..\..\src\harfbuzz\src\hb-unicode.cc" "..\..\src\harfbuzz\src\hb-warning.cc" "..\..\src\harfbuzz\src\hb-ucdn.cc"
+         hb-uniscribe.cc
+         hb-blob.cc
+         hb-buffer-serialize.cc
+         hb-buffer.cc
+         hb-common.cc
+         hb-face.cc
+         hb-fallback-shape.cc
+         hb-font.cc
+         hb-ft.cc
+         hb-ot-layout.cc
+         hb-ot-map.cc
+         hb-ot-shape-complex-arabic.cc
+         hb-ot-shape-complex-default.cc
+         hb-ot-shape-complex-indic-table.cc
+         hb-ot-shape-complex-indic.cc
+         hb-ot-shape-complex-myanmar.cc
+         hb-ot-shape-complex-sea.cc
+         hb-ot-shape-complex-thai.cc
+         hb-ot-shape-fallback.cc
+         hb-ot-shape-normalize.cc
+         Generating Code...
+         Compiling...
+         hb-ot-shape.cc
+         hb-ot-tag.cc
+         hb-set.cc
+         hb-shape-plan.cc
+         hb-shape.cc
+         hb-shaper.cc
+         hb-tt-font.cc
+         hb-unicode.cc
+         hb-warning.cc
+         hb-ucdn.cc
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"./../../lib/vs2012x86\harfbuzzD.lib" Usp10.lib Rpcrt4.lib /NOLOGO /MACHINE:X86 /MACHINE:x86 /SUBSYSTEM:WINDOWS /NOLOGO ./intermediate/harfbuzz/vs2012x86/release/ucdn.obj
+         "./intermediate/harfbuzz/vs2012x86/release/hb-uniscribe.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-blob.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-buffer-serialize.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-buffer.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-common.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-face.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-fallback-shape.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-font.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ft.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-layout.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-map.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-shape-complex-arabic.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-shape-complex-default.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-shape-complex-indic-table.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-shape-complex-indic.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-shape-complex-myanmar.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-shape-complex-sea.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-shape-complex-thai.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-shape-fallback.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-shape-normalize.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-shape.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ot-tag.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-set.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-shape-plan.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-shape.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-shaper.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-tt-font.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-unicode.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-warning.obj"
+         "./intermediate/harfbuzz/vs2012x86/release/hb-ucdn.obj"
+     1>Rpcrt4.lib(RPCRT4.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in Usp10.lib(USP10.dll); second definition ignored
+     1>Rpcrt4.lib(RPCRT4.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+         harfbuzz.vcxproj -> D:\Topaz\to_redmine\example\extensions\externals\build\vs2012win32\./../../lib/vs2012x86\harfbuzzD.lib
+     1>Done Building Project "D:\Topaz\to_redmine\example\extensions\externals\build\vs2012win32\harfbuzz.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:08.95

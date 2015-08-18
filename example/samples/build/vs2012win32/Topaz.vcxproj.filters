@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\Topaz\Topaz\topaz.cpp" />
+    <ClCompile Include="..\..\Topaz\Topaz\nvtoken.cpp">
+      <Filter>NvCommandList</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Topaz\Topaz\nvcommandlist.cpp">
+      <Filter>NvCommandList</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Topaz\Topaz\statesystem.cpp">
+      <Filter>NvCommandList</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Topaz\Topaz\TopazGLModel.cpp">
+      <Filter>TopazModel</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Topaz\Topaz\topaz.h" />
+    <ClInclude Include="..\..\Topaz\Topaz\nvtoken.hpp">
+      <Filter>NvCommandList</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Topaz\Topaz\common.h">
+      <Filter>NvCommandList</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Topaz\Topaz\nvcommandlist.h">
+      <Filter>NvCommandList</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Topaz\Topaz\statesystem.hpp">
+      <Filter>NvCommandList</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Topaz\Topaz\TopazGLModel.h">
+      <Filter>TopazModel</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="NvCommandList">
+      <UniqueIdentifier>{dd6f3a4c-88c9-4e7d-820e-ee9a6a04d697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TopazModel">
+      <UniqueIdentifier>{f22995f9-7f39-4fd1-a22e-16ce27eb1062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{474308bd-1720-4947-8526-6e9e1e09034e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Topaz\Topaz\assets\shaders\fragment.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\Topaz\Topaz\assets\shaders\vertex.glsl">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,37 @@
+﻿Build started 18.08.2015 10:25:57.
+     1>Project "D:\Topaz\to_redmine\example\extensions\build\vs2012win32\NvAppBase.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./../../src/NvAppBase /I./../../include /I./../../externals/include/GLFW /Zi /nologo /W3 /WX /Od /Oi /Oy- /D WIN32 /D _WIN32 /D _LIB /D _DEBUG /D PROFILE /D _ITERATOR_DEBUG_LEVEL=0 /Gm- /EHsc /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"./intermediate/NvAppBase/vs2012x86/release/" /Fd"./intermediate/NvAppBase/vs2012x86/release/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt /Oy- /EHsc /wd4748 /wd4100 /wd4201 ..\..\src\NvAppBase\EngineAndroid.cpp ..\..\src\NvAppBase\InputCallbacksGLFW.cpp ..\..\src\NvAppBase\MainAndroid.cpp ..\..\src\NvAppBase\MainLinux.cpp ..\..\src\NvAppBase\MainMacOSX.cpp ..\..\src\NvAppBase\MainWin32.cpp ..\..\src\NvAppBase\NvAppBase.cpp ..\..\src\NvAppBase\NvFramerateCounter.cpp ..\..\src\NvAppBase\NvInputTransformer.cpp ..\..\src\NvAppBase\NvLogs.cpp ..\..\src\NvAppBase\NvSampleApp.cpp
+         EngineAndroid.cpp
+         InputCallbacksGLFW.cpp
+         MainAndroid.cpp
+         MainLinux.cpp
+         MainMacOSX.cpp
+         MainWin32.cpp
+         NvAppBase.cpp
+         NvFramerateCounter.cpp
+         NvInputTransformer.cpp
+         NvLogs.cpp
+         NvSampleApp.cpp
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./../../src/NvAppBase /I./../../include /I./../../externals/include/GLFW /Zi /nologo /W3 /WX /Od /Oi /Oy- /D WIN32 /D _WIN32 /D _LIB /D _DEBUG /D PROFILE /D _ITERATOR_DEBUG_LEVEL=0 /Gm- /EHsc /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"./intermediate/NvAppBase/vs2012x86/release/" /Fd"./intermediate/NvAppBase/vs2012x86/release/vc120.pdb" /Gd /TC /analyze- /errorReport:prompt /Oy- /EHsc /wd4748 /wd4100 /wd4201 ..\..\src\NvAppBase\NvAndroidNativeAppGlue.c
+         NvAndroidNativeAppGlue.c
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"./../../lib/vs2012x86\libNvAppBaseD.lib" /NOLOGO /MACHINE:X86 /MACHINE:x86 /SUBSYSTEM:WINDOWS /NOLOGO ./intermediate/NvAppBase/vs2012x86/release/EngineAndroid.obj
+         ./intermediate/NvAppBase/vs2012x86/release/InputCallbacksGLFW.obj
+         ./intermediate/NvAppBase/vs2012x86/release/MainAndroid.obj
+         ./intermediate/NvAppBase/vs2012x86/release/MainLinux.obj
+         ./intermediate/NvAppBase/vs2012x86/release/MainMacOSX.obj
+         ./intermediate/NvAppBase/vs2012x86/release/MainWin32.obj
+         ./intermediate/NvAppBase/vs2012x86/release/NvAppBase.obj
+         ./intermediate/NvAppBase/vs2012x86/release/NvFramerateCounter.obj
+         ./intermediate/NvAppBase/vs2012x86/release/NvInputTransformer.obj
+         ./intermediate/NvAppBase/vs2012x86/release/NvLogs.obj
+         ./intermediate/NvAppBase/vs2012x86/release/NvSampleApp.obj
+         ./intermediate/NvAppBase/vs2012x86/release/NvAndroidNativeAppGlue.obj
+         NvAppBase.vcxproj -> D:\Topaz\to_redmine\example\extensions\build\vs2012win32\./../../lib/vs2012x86\libNvAppBaseD.lib
+     1>Done Building Project "D:\Topaz\to_redmine\example\extensions\build\vs2012win32\NvAppBase.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:13.93

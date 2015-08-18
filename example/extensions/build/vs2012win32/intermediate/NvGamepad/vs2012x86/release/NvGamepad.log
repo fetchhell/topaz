@@ -1,0 +1,18 @@
+﻿Build started 18.08.2015 10:25:58.
+     1>Project "D:\Topaz\to_redmine\example\extensions\build\vs2012win32\NvGamepad.vcxproj" on node 5 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I./../../src/NvGamepad /I./../../include /I./../../externals/include/GLFW /Zi /nologo /W3 /WX /Od /Oi /Oy- /D WIN32 /D _WIN32 /D _LIB /D _DEBUG /D PROFILE /D _ITERATOR_DEBUG_LEVEL=0 /Gm- /EHsc /MTd /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"./intermediate/NvGamepad/vs2012x86/release/" /Fd"./intermediate/NvGamepad/vs2012x86/release/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt /Oy- /EHsc /wd4748 /wd4100 /wd4201 ..\..\src\NvGamepad\NvGamepadAndroid.cpp ..\..\src\NvGamepad\NvGamepadLinux.cpp ..\..\src\NvGamepad\NvGamepadXInput.cpp
+         NvGamepadAndroid.cpp
+         NvGamepadLinux.cpp
+         NvGamepadXInput.cpp
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"./../../lib/vs2012x86\libNvGamepadD.lib" /NOLOGO /MACHINE:X86 /MACHINE:x86 /SUBSYSTEM:WINDOWS /NOLOGO ./intermediate/NvGamepad/vs2012x86/release/NvGamepadAndroid.obj
+         ./intermediate/NvGamepad/vs2012x86/release/NvGamepadLinux.obj
+         ./intermediate/NvGamepad/vs2012x86/release/NvGamepadXInput.obj
+         NvGamepad.vcxproj -> D:\Topaz\to_redmine\example\extensions\build\vs2012win32\./../../lib/vs2012x86\libNvGamepadD.lib
+     1>Done Building Project "D:\Topaz\to_redmine\example\extensions\build\vs2012win32\NvGamepad.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.50
