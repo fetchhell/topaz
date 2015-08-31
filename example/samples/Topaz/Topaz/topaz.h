@@ -1,32 +1,9 @@
 #pragma once
 
-#include "NvAppBase/NvSampleApp.h"
-#include "NvAppBase/NvInputTransformer.h"
-
-#include "NvAssetLoader/NvAssetLoader.h"
-#include "NvGLUtils/NvGLSLProgram.h"
-#include "NvGLUtils/NvTimers.h"
-#include "NvGLUtils/NvImage.h"
-#include "TopazGLModel.h"
-#include "NvModel/NvModel.h"
-#include "NV/NvLogs.h"
-#include "NV/NvMath.h"
-
-#include <vector>
-#include <string>
-
-#include <memory>
-
-#include "nvtoken.hpp"
+#include "includeAll.h"
+#include "WeightedBlendedOIT.h"
 
 using namespace nvtoken;
-
-#define VERTEX_POS    0
-#define VERTEX_NORMAL 1
-#define VERTEX_UV     2
-
-#define UBO_SCENE     0
-#define UBO_OBJECT    1
 
 class TopazSample : public NvSampleApp
 {
@@ -43,9 +20,12 @@ public:
 
 	void configurationCallback(NvEGLConfiguration& config);
 
-	void loadModel(std::string filename);
+	void loadModel(std::string filename, GLuint program, bool calculateCornerPoints = false);
 
-	void compileShaders();
+	void compileShaders(std::string name,
+						const char* vertexShaderFilename, 
+						const char* fragmentShaderFilename,
+						const char* geometryShaderFilename = nullptr);
 
 private:
 
@@ -55,8 +35,32 @@ private:
 
 	void updateCommandListState();
 
+	void initBuffer(GLenum target, GLuint& buffer, GLuint64& buffer64, 
+		GLsizeiptr size, const GLvoid* data, bool ismutable = false);
+
+	void drawModel(GLenum mode, NvGLSLProgram& program, TopazGLModel& model);
+
+	void renderTokenListWeightedBlendedOIT();
+
+	/* checking result of standart draw ( without command list ) */ 
+	void TopazSample::drawStandard();
+	void TopazSample::renderStandartWeightedBlendedOIT();
+
+	/* ARB_bindless_texture support */
 	bool bindlessVboUbo;
+
+	/* NV_uniform_buffer_unified_memory support */
 	bool hwsupport;
+
+	enum DrawMode 
+	{
+		DRAW_STANDARD,
+		DRAW_TOKEN_LIST,
+		DRAW_WEIGHT_BLENDED_STANDARD,
+		DRAW_WEIGHT_BLENDED_TOKEN_LIST
+	};
+
+	uint32_t drawMode;
 
 	struct StateIncarnation 
 	{
@@ -80,7 +84,8 @@ private:
 
 	struct CmdList 
 	{
-		CmdList() : stateObjectDraw(0), tokenBuffer(0), tokenCmdList(0)
+		CmdList() : stateObjectDraw(0), stateObjectGeometryDraw(0), stateObjectLinesDraw(0),
+			tokenBuffer(0), tokenCmdList(0)
 		{
 		}
 
@@ -88,6 +93,8 @@ private:
 		StateIncarnation  captured;
 
 		GLuint          stateObjectDraw;
+		GLuint			stateObjectGeometryDraw;
+		GLuint			stateObjectLinesDraw;
 
 		GLuint          tokenBuffer;
 		GLuint          tokenCmdList;
@@ -131,17 +138,22 @@ private:
 
 	struct uniformBuffer
 	{
-		uniformBuffer() : sceneUbo(0), sceneUbo64(0)
+		uniformBuffer() : sceneUbo(0), sceneUbo64(0), weightBlendedUbo(0), weightBlendedUbo64(0)
 		{
 		}
 
 		GLuint   sceneUbo;
 		GLuint64 sceneUbo64;
+
+		GLuint weightBlendedUbo;
+		GLuint64 weightBlendedUbo64;
+
 	} ubos;
 
 	struct SceneData
 	{
 		nv::matrix4f modelViewProjection;
+		float depthScale;
 	} sceneData;
 
 	struct ObjectData
@@ -151,9 +163,24 @@ private:
 		GLuint64  skybox;
 	} objectData;
 
-	std::vector<std::unique_ptr<NvGLSLProgram> > shaderPrograms;
-	std::vector<std::unique_ptr<TopazGLModel> >	 models;
+	struct WeightBlendedData
+	{
+		GLuint64 background;
+		GLuint64 colorTex0;
+		GLuint64 colorTex1;
+	} weightBlendedData;
 
-	// check
-	void TopazSample::drawStandard();
+	struct DepthPeelingData
+	{
+	};
+
+	std::map<std::string, std::unique_ptr<NvGLSLProgram> > shaderPrograms;
+	std::vector<std::unique_ptr<TopazGLModel> >  models;
+
+	std::vector<std::unique_ptr<TopazGLModel> > opaqueModels;
+	std::vector<std::unique_ptr<TopazGLModel> > transparentModels;
+
+	std::unique_ptr<WeightedBlendedOIT> oit;
+
+	nv::vec4f sceneBackgroundColor;
 };

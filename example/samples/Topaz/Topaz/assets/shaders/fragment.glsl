@@ -1,3 +1,5 @@
+#version 440
+
 #extension GL_NV_command_list : enable
 #extension GL_NV_shadow_samplers_cube : enable
 #extension GL_ARB_bindless_texture : require
@@ -20,8 +22,8 @@ layout(std140, binding = UBO_OBJECT) uniform objectBuffer
 
 in Varyings
 {
-	vec3 skyboxCoord;
-} varyings;
+	vec3 pos;
+} in_varyings;
 
 layout(location = 0, index = 0) out vec4 outColor;
 
@@ -30,7 +32,7 @@ void main()
 	vec4 color = vec4(0.0);
 	if (objectData.objectID == 0)
 	{
-		color = textureCube(objectData.skybox, varyings.skyboxCoord);
+		color = textureCube(objectData.skybox, in_varyings.pos);
 	}
 	else
 	{

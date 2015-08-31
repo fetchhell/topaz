@@ -6,6 +6,9 @@
 #include "NV/NvPlatformGL.h"
 #include "NV/NvMath.h"
 
+#include <vector>
+#include <map>
+
 class NvModel;
 
 class TopazGLModel
@@ -19,6 +22,8 @@ public:
     void loadModelFromObjData(char *fileData);
     void rescaleModel(float radius);
 
+	void setProgram(GLuint program);
+
     void initBuffers(bool computeTangents = false, bool computeNormals = true);
 
     void drawElements(GLint positionHandle);
@@ -29,6 +34,7 @@ public:
     NvModel *getModel();
 
     void computeCenter();
+	void calculateCornerPoints(float radius);
 
     nv::vec3f m_center; 
 
@@ -42,34 +48,44 @@ public:
         return m_maxExtent;
     }
 
-	GLuint & getVBO()
+	GLuint getProgram()
 	{
-		return model_vboID;
+		return model_program;
 	}
 
-	GLuint & getIBO()
+	GLuint & getBufferID(std::string name)
 	{
-		return model_iboID;
+		return modelBuffers[name];
 	}
 
-	GLuint & getUBO()
+	GLuint64 & getBufferID64(std::string name)
 	{
-		return model_uboID;
+		return modelBuffers64[name];
 	}
 
-	GLuint64 & getVBO64()
+	GLuint & getCornerBufferID(std::string name)
 	{
-		return model_vboID64;
+		return modelCornerBuffers[name];
 	}
 
-	GLuint64 & getIBO64()
+	GLuint64 & getCornerBufferID64(std::string name)
 	{
-		return model_iboID64;
+		return modelCornerBuffers64[name];
+	}
+	
+	bool cornerPointsExists()
+	{
+		return cornerPointsExisting;
 	}
 
-	GLuint64 & getUBO64()
+	std::vector<nv::vec3f> & getCorners()
 	{
-		return model_uboID64;
+		return corners;
+	}
+
+	std::vector<GLuint> & getCornerIndices()
+	{
+		return cornerIndices;
 	}
 
     void bindBuffers();
@@ -77,12 +93,22 @@ public:
 
 private:
 
-	NvModel *model;
+	NvModel* model;
 
-    GLuint   model_vboID, model_iboID, model_uboID;
-	GLuint64 model_vboID64, model_iboID64, model_uboID64;
+	std::map<std::string, GLuint> modelBuffers;
+	std::map<std::string, GLuint64> modelBuffers64;
+
+	std::map<std::string, GLuint> modelCornerBuffers;
+	std::map<std::string, GLuint64> modelCornerBuffers64;
+
+	GLuint model_program;
 
     nv::vec3f m_minExtent, m_maxExtent, m_radius;
+	
+	std::vector<nv::vec3f> corners;
+	std::vector<GLuint> cornerIndices;
+
+	bool cornerPointsExisting;
 };
 
 #endif 

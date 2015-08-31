@@ -20,7 +20,6 @@ struct ObjectData
 struct SceneData
 {
 	mat4 modelViewProjection;
-	float depthScale;
 };
 
 layout(commandBindableNV) uniform;
@@ -39,21 +38,7 @@ in layout(location = VERTEX_POS)    vec3 pos;
 in layout(location = VERTEX_NORMAL) vec3 normal;
 in layout(location = VERTEX_UV)     vec2 uv;
 
-out Varyings
-{
-	vec3 pos;
-} out_varyings;
-
 void main()
 {
   gl_Position = sceneData.modelViewProjection * vec4(pos, 1);
-  out_varyings.pos = pos;
 }
-
-
-
-
-
-
-
- 
