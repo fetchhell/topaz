@@ -40,9 +40,10 @@ void TopazGLModel::calculateCornerPoints(float radius)
 
 	nv::vec3f diff =  0.5f * (m_maxExtent - m_minExtent);
 	nv::vec3f center =  m_minExtent + diff;
+	center = nv::vec3f(center.x, 0.1, center.z);
 
 	float oldRadius = std::max(diff.x, std::max(diff.y, diff.z));
-	float scale = radius / oldRadius;
+	float scale = 5.0f; // radius / oldRadius;
 
 	this->corners.push_back(nv::vec3f(scale * (rightBottom - center)));
 	this->corners.push_back(nv::vec3f(scale * (rightTop - center)));

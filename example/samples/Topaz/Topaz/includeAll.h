@@ -9,6 +9,7 @@
 #include "NvGLUtils/NvImage.h"
 #include "TopazGLModel.h"
 #include "NvModel/NvModel.h"
+#include "NvModel/NvShapes.h"
 #include "NV/NvLogs.h"
 #include "NV/NvMath.h"
 
@@ -16,7 +17,7 @@
 
 #include <vector>
 #include <string>
-#include <map>
+#include <map> 
 
 #include <memory>
 
@@ -29,3 +30,4 @@
 #define UBO_SCENE     0
 #define UBO_OBJECT    1
 #define UBO_OIT		  2
+#define UBO_IDENTITY  3

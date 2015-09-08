@@ -2,6 +2,7 @@
 
 #include "includeAll.h"
 #include "WeightedBlendedOIT.h"
+#include "Brush.h"
 
 using namespace nvtoken;
 
@@ -33,6 +34,12 @@ private:
 	void initCommandList();
 	void initFramebuffers(int32_t width, int32_t height);
 
+	void pushTokenParameters(NVTokenSequence& sequence, size_t& offset, std::string& stream, GLuint fbo, GLuint state);
+	void setTokenBuffers(TopazGLModel* model, std::string& stream, bool cornerPoints = false);
+
+	// change
+	void initCommandListWeightBlended();
+
 	void updateCommandListState();
 
 	void initBuffer(GLenum target, GLuint& buffer, GLuint64& buffer64, 
@@ -45,6 +52,9 @@ private:
 	/* checking result of standart draw ( without command list ) */ 
 	void TopazSample::drawStandard();
 	void TopazSample::renderStandartWeightedBlendedOIT();
+
+	/* command list inited */
+	bool isTokenInternalsInited;
 
 	/* ARB_bindless_texture support */
 	bool bindlessVboUbo;
@@ -84,46 +94,59 @@ private:
 
 	struct CmdList 
 	{
-		CmdList() : stateObjectDraw(0), stateObjectGeometryDraw(0), stateObjectLinesDraw(0),
-			tokenBuffer(0), tokenCmdList(0)
+		CmdList()
 		{
 		}
 
 		StateIncarnation  state;
 		StateIncarnation  captured;
 
-		GLuint          stateObjectDraw;
-		GLuint			stateObjectGeometryDraw;
-		GLuint			stateObjectLinesDraw;
+		/* state objects of base opaque draw */
+		std::map<GLenum, GLuint> stateObjects;
+
+		/* state objects of weight blended algorithm */
+		std::map<GLenum, GLuint> stateObjectsWeightBlended;
 
 		GLuint          tokenBuffer;
 		GLuint          tokenCmdList;
 
+		/* tokens weight blended */
+		GLuint			tokenBufferWeightBlended;
+		GLuint			tokenCmdListWeightBlended;
+
 		NVTokenSequence tokenSequence;
 		NVTokenSequence tokenSequenceList;
 
+		/* token sequence weight blended */
+		NVTokenSequence tokenSequenceWeightBlended;
+		NVTokenSequence tokenSequenceListWeightBlended;
+
 		std::string     tokenData;
+
+		/* token data weight blended */
+		std::string		tokenDataWeightBlended;
+
 	} cmdlist;
 
 	struct Textures
 	{
-		Textures() : sceneColor(0), sceneDepthStencil(0), skybox(0)
+		Textures() : sceneColor(0), sceneDepth(0), skybox(0)
 		{
 		}
 
 		GLuint sceneColor,
-			   sceneDepthStencil,
+			   sceneDepth,
 			   skybox;
 	} textures;
 
 	struct TexturesAddress64
 	{
-		TexturesAddress64() : sceneColor(0), sceneDepthStencil(0), skybox(0)
+		TexturesAddress64() : sceneColor(0), sceneDepth(0), skybox(0)
 		{
 		}
 
 		GLuint64 sceneColor,
-				 sceneDepthStencil,
+				 sceneDepth,
 				 skybox;
 	} texturesAddress64;
 
@@ -138,12 +161,16 @@ private:
 
 	struct uniformBuffer
 	{
-		uniformBuffer() : sceneUbo(0), sceneUbo64(0), weightBlendedUbo(0), weightBlendedUbo64(0)
+		uniformBuffer() : sceneUbo(0), sceneUbo64(0), identityUbo(0), 
+						identityUbo64(0), weightBlendedUbo(0), weightBlendedUbo64(0)
 		{
 		}
 
 		GLuint   sceneUbo;
 		GLuint64 sceneUbo64;
+
+		GLuint	 identityUbo;
+		GLuint64 identityUbo64;
 
 		GLuint weightBlendedUbo;
 		GLuint64 weightBlendedUbo64;
@@ -153,14 +180,21 @@ private:
 	struct SceneData
 	{
 		nv::matrix4f modelViewProjection;
+		GLuint64 sceneDepthId64;
 		float depthScale;
 	} sceneData;
+
+	struct IdentityData
+	{
+		nv::matrix4f identity;
+	} identityData;
 
 	struct ObjectData
 	{
 		nv::vec4f objectID;
 		nv::vec4f objectColor;
 		GLuint64  skybox;
+		GLuint64  pattern;
 	} objectData;
 
 	struct WeightBlendedData
@@ -170,17 +204,26 @@ private:
 		GLuint64 colorTex1;
 	} weightBlendedData;
 
-	struct DepthPeelingData
+	struct BrushData
 	{
-	};
+		GLubyte pattern[128];
+	} brushData;
+
+	struct FullScreenRectangle
+	{
+		FullScreenRectangle() : vboFullScreen(0), vboFullScreen64(0)
+		{
+		}
+
+		GLuint vboFullScreen;
+		GLuint64 vboFullScreen64;
+	} fullScreenRectangle;
 
 	std::map<std::string, std::unique_ptr<NvGLSLProgram> > shaderPrograms;
 	std::vector<std::unique_ptr<TopazGLModel> >  models;
 
-	std::vector<std::unique_ptr<TopazGLModel> > opaqueModels;
-	std::vector<std::unique_ptr<TopazGLModel> > transparentModels;
-
 	std::unique_ptr<WeightedBlendedOIT> oit;
+	std::unique_ptr<BrushStyles> brushStyle;
 
 	nv::vec4f sceneBackgroundColor;
 };

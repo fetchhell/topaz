@@ -14,37 +14,37 @@ void WeightedBlendedOIT::InitAccumulationRenderTargets(int32_t width, int32_t he
 	/* scene non transparent */
 
 	glBindTexture(GL_TEXTURE_RECTANGLE, this->sceneOpaqueId);
-
+	
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA16F, this->imageWidth, this->imageHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA16F, this->imageWidth, this->imageHeight, 0, GL_RGBA, GL_FLOAT, nullptr);
 
 	glGenTextures(2, this->accumulationTextureId);
 
 	/* rgba texture */
 
 	glBindTexture(GL_TEXTURE_RECTANGLE, this->accumulationTextureId[0]);
-
+	
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA16F, this->imageWidth, this->imageHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	
+	glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA16F, this->imageWidth, this->imageHeight, 0, GL_RGBA, GL_FLOAT, nullptr);
 
 	/* alpha texture */
 
-	glBindTexture(GL_TEXTURE_RECTANGLE, accumulationTextureId[1]);
-
+	glBindTexture(GL_TEXTURE_RECTANGLE, this->accumulationTextureId[1]);
+	
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_R8, this->imageWidth, this->imageHeight, 0, GL_RED, GL_FLOAT, NULL);
+	
+    glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_R8, this->imageWidth, this->imageHeight, 0, GL_RED, GL_FLOAT, nullptr);
 
 	glGenFramebuffers(1, &this->accumulationFramebufferId);
 	glBindFramebuffer(GL_FRAMEBUFFER, this->accumulationFramebufferId);
@@ -54,7 +54,7 @@ void WeightedBlendedOIT::InitAccumulationRenderTargets(int32_t width, int32_t he
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_RECTANGLE, this->sceneOpaqueId, 0);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	
+
 	if (GLEW_ARB_bindless_texture)
 	{
 		this->accumulationTextureId64[0] = glGetTextureHandleARB(this->accumulationTextureId[0]);

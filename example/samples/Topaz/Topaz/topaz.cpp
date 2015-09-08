@@ -1,12 +1,15 @@
 #include "topaz.h"
 #include <windows.h>
 
-TopazSample::TopazSample(NvPlatformContext* platform) : NvSampleApp(platform, "Topaz Sample"), drawMode(DRAW_TOKEN_LIST)
+TopazSample::TopazSample(NvPlatformContext* platform) : NvSampleApp(platform, "Topaz Sample"), drawMode(DRAW_STANDARD)
 {
 	oit = std::unique_ptr<WeightedBlendedOIT>(new WeightedBlendedOIT);
+	brushStyle = std::unique_ptr<BrushStyles>(new BrushStyles);
+
+	isTokenInternalsInited = false;
 
 	sceneBackgroundColor = nv::vec4f(0.2f, 0.2f, 0.2f, 0.0f);
-	m_transformer->setTranslationVec(nv::vec3f(0.f, 0.f, -2.5f));
+	m_transformer->setTranslationVec(nv::vec3f(0.f, -0.1f, -2.5f));
 	forceLinkHack();
 }
 
@@ -29,7 +32,8 @@ void TopazSample::initUI()
 		{
 			{ "standard", DRAW_STANDARD },
 			{ "nvcmdlist list", DRAW_TOKEN_LIST },
-			{ "weight blended standard", DRAW_WEIGHT_BLENDED_STANDARD }
+			{ "weight blended standard", DRAW_WEIGHT_BLENDED_STANDARD },
+			{ "weight blended token list", DRAW_WEIGHT_BLENDED_TOKEN_LIST }
 		};
 
 		mTweakBar->addPadding();
@@ -68,11 +72,18 @@ void TopazSample::initRendering()
 		compileShaders("geometry", "shaders/vertex.glsl", "shaders/fragment.glsl", "shaders/geometry.glsl");
 	*/
 	compileShaders("weightBlended", "shaders/vertex.glsl", "shaders/fragmentBlendOIT.glsl");
-	compileShaders("weightBlendedFinal", "shaders/vertex.glsl", "shaders/fragmentFinalOIT.glsl");
+	compileShaders("weightBlendedFinal", "shaders/vertexOIT.glsl", "shaders/fragmentFinalOIT.glsl");
+
+	// like as glClearBufferfv for nv_command_list
+	compileShaders("clear", "shaders/vertexOIT.glsl", "shaders/clear.glsl");
 
 	loadModel("models/background.obj", shaderPrograms["draw"]->getProgram());
+
 	loadModel("models/way3.obj", shaderPrograms["draw"]->getProgram(), true);
 	loadModel("models/way4.obj", shaderPrograms["draw"]->getProgram(), true);
+	loadModel("models/way5.obj", shaderPrograms["draw"]->getProgram());
+
+	loadModel("models/formular.obj", shaderPrograms["draw"]->getProgram());
 
 	textures.skybox = NvImage::UploadTextureFromDDSFile("textures/sky_cube.dds");
 
@@ -88,6 +99,7 @@ void TopazSample::reshape(int32_t width, int32_t height)
 
 	initScene();
 	initCommandList();
+	initCommandListWeightBlended();
 
 	CHECK_GL_ERROR();
 }
@@ -95,12 +107,11 @@ void TopazSample::reshape(int32_t width, int32_t height)
 void TopazSample::draw()
 {
 	nv::matrix4f projection = nv::perspective(projection, 45.f * NV_PI / 180.f, m_width / float(m_height), 0.1f, 10.f);
+	sceneData.sceneDepthId64 = texturesAddress64.sceneDepth;
 	sceneData.modelViewProjection = projection * m_transformer->getModelViewMat();
 	sceneData.depthScale = oit->getWeightParameter();
 
 	glNamedBufferSubDataEXT(ubos.sceneUbo, 0, sizeof(SceneData), &sceneData);
-
-	glLineWidth(10.0f);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbos.scene);
 
@@ -128,10 +139,25 @@ void TopazSample::draw()
 	{
 		renderStandartWeightedBlendedOIT();
 	}
+	else if (drawMode == DRAW_WEIGHT_BLENDED_TOKEN_LIST)
+	{
+		for (auto model = models.begin() + 1; model != models.end(); model++)
+		{
+			objectData.objectColor = nv::vec4f(1.0f, 1.0f, 1.0f, oit->getOpacity());
+			glNamedBufferSubDataEXT((*model)->getBufferID("ubo"), 0, sizeof(ObjectData), &objectData);
 
+			objectData.objectColor = nv::vec4f(1.0f, 0.0f, 0.0f, oit->getOpacity());
+			glNamedBufferSubDataEXT((*model)->getCornerBufferID("ubo"), 0, sizeof(ObjectData), &objectData);
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, fbos.scene);
+		glCallCommandListNV(cmdlist.tokenCmdListWeightBlended);
+	}
+	
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, fbos.scene);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, m_width, m_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	
 }
 
 void TopazSample::compileShaders(std::string name,
@@ -234,15 +260,35 @@ void TopazSample::initScene()
 		glMakeTextureHandleResidentARB(texturesAddress64.skybox);
 	}
 
+	// init fullscreen quad
+	{
+		const float position[] = 
+		{
+			-1.0f, -1.0f, 0.0,
+			1.0f, -1.0f, 0.0,
+			-1.0f, 1.0f, 0.0, 
+			1.0f, 1.0f, 0.0
+		};
+
+		initBuffer(GL_ARRAY_BUFFER, fullScreenRectangle.vboFullScreen, fullScreenRectangle.vboFullScreen64,
+			12 * sizeof(float),
+			position); 
+	}
+
 	// initializate scene & weightBlended ubo
 	{
-		initBuffer(GL_UNIFORM_BUFFER, ubos.sceneUbo, ubos.sceneUbo64, 
-			sizeof(SceneData), 
-			nullptr, 
+		initBuffer(GL_UNIFORM_BUFFER, ubos.sceneUbo, ubos.sceneUbo64,
+			sizeof(SceneData),
+			nullptr,
+			true); // mutable buffer
+
+		initBuffer(GL_UNIFORM_BUFFER, ubos.identityUbo, ubos.identityUbo64,
+			sizeof(IdentityData),
+			identityData.identity._array,
 			true); // mutable buffer
 
 		WeightBlendedData weightBlendedData;
-		weightBlendedData.background = texturesAddress64.sceneColor; // oit->getOpaqueId64(); 
+		weightBlendedData.background = texturesAddress64.sceneColor;
 		weightBlendedData.colorTex0 = oit->getAccumulationTextureId64(0);
 		weightBlendedData.colorTex1 = oit->getAccumulationTextureId64(1);
 
@@ -252,9 +298,12 @@ void TopazSample::initScene()
 			true); // mutable buffer
 	}
 
+	brushStyle->brushPattern8to32(QtStyles::Dense1Pattern);
+
 	objectData.objectID = nv::vec4f(0.0);
 	objectData.objectColor = nv::vec4f(1.0f, 1.0f, 1.0f, oit->getOpacity());
 	objectData.skybox = texturesAddress64.skybox;
+	objectData.pattern = brushStyle->getTextureId64();
 
 	for (auto & model : models)
 	{
@@ -286,6 +335,7 @@ void TopazSample::initScene()
 			ObjectData curObjectData;
 			curObjectData.objectID = nv::vec4f(1.0f);
 			curObjectData.objectColor = nv::vec4f(1.0f, 0.0f, 0.0f, oit->getOpacity());
+			curObjectData.pattern = brushStyle->getTextureId64();
 
 			initBuffer(GL_UNIFORM_BUFFER, model->getCornerBufferID("ubo"), model->getCornerBufferID64("ubo"), 
 				sizeof(ObjectData),
@@ -309,16 +359,69 @@ NVPproc sysGetProcAddress(const char* name)
 	return (NVPproc)wglGetProcAddress(name);
 }
 
+void TopazSample::setTokenBuffers(TopazGLModel* model, std::string& stream, bool cornerPoints)
+{
+	GLuint vboId = (!cornerPoints) ? model->getBufferID("vbo") : model->getCornerBufferID("vbo");
+	GLuint vboId64 = (!cornerPoints) ? model->getBufferID64("vbo") : model->getCornerBufferID64("vbo");
+
+	GLuint iboId = (!cornerPoints) ? model->getBufferID("ibo") : model->getCornerBufferID("ibo");
+	GLuint iboId64 = (!cornerPoints) ? model->getBufferID64("ibo") : model->getCornerBufferID64("ibo");
+
+	GLuint uboId = (!cornerPoints) ? model->getBufferID("ubo") : model->getCornerBufferID("ubo");
+	GLuint uboId64 = (!cornerPoints) ? model->getBufferID64("ubo") : model->getCornerBufferID64("ubo");
+
+	NVTokenVbo vbo;
+	vbo.setBinding(0);
+	vbo.setBuffer(vboId, vboId64, 0);
+	nvtokenEnqueue(stream, vbo);
+
+	NVTokenIbo ibo;
+	ibo.setType(GL_UNSIGNED_INT);
+	ibo.setBuffer(iboId, iboId64);
+	nvtokenEnqueue(stream, ibo);
+
+	NVTokenUbo ubo;
+	ubo.setBuffer(uboId, uboId64, 0, sizeof(ObjectData));
+	ubo.setBinding(UBO_OBJECT, NVTOKEN_STAGE_VERTEX);
+	nvtokenEnqueue(stream, ubo);
+	ubo.setBinding(UBO_OBJECT, NVTOKEN_STAGE_FRAGMENT);
+	nvtokenEnqueue(stream, ubo);
+}
+
+void TopazSample::pushTokenParameters(NVTokenSequence& sequence, size_t& offset, std::string& stream, GLuint fbo, GLuint state)
+{
+	sequence.offsets.push_back(offset);
+	sequence.sizes.push_back(GLsizei(stream.size() - offset));
+	sequence.fbos.push_back(fbo);
+	sequence.states.push_back(state);
+
+	offset = stream.size();
+}
+
 void TopazSample::initCommandList()
 {
-	hwsupport = init_NV_command_list(sysGetProcAddress) ? true : false;
+	if (!isTokenInternalsInited)
+	{
+		hwsupport = init_NV_command_list(sysGetProcAddress) ? true : false;
+		nvtokenInitInternals(hwsupport, bindlessVboUbo);
 
-	nvtokenInitInternals(hwsupport, bindlessVboUbo);
+		isTokenInternalsInited = true;
+	}
+
+	enum States
+	{
+		STATE_DRAW,
+		STATE_GEOMETRY_DRAW,
+		STATE_LINES_DRAW,
+		STATES_COUNT
+	};
 	
 	if (hwsupport)
 	{
-		glCreateStatesNV(1, &cmdlist.stateObjectDraw);
-	    glCreateStatesNV(1, &cmdlist.stateObjectLinesDraw);
+		for (size_t i = 0; i < STATES_COUNT; i++)
+		{
+			glCreateStatesNV(1, &cmdlist.stateObjects[i]);
+		}
 
 		glGenBuffers(1, &cmdlist.tokenBuffer);
 		glCreateCommandListsNV(1, &cmdlist.tokenCmdList);
@@ -339,56 +442,20 @@ void TopazSample::initCommandList()
 	
 	for (auto & model : models)
 	{
-		NVTokenVbo vbo;
-		vbo.setBinding(0);
-		vbo.setBuffer(model->getBufferID("vbo"), model->getBufferID64("vbo"), 0);
-		nvtokenEnqueue(stream, vbo);
-
-		NVTokenIbo ibo;
-		ibo.setType(GL_UNSIGNED_INT);
-		ibo.setBuffer(model->getBufferID("ibo"), model->getBufferID64("ibo"));
-		nvtokenEnqueue(stream, ibo);
-
-		NVTokenUbo ubo;
-		ubo.setBuffer(model->getBufferID("ubo"), model->getBufferID64("ubo"), 0, sizeof(ObjectData));
-		ubo.setBinding(UBO_OBJECT, NVTOKEN_STAGE_VERTEX);
-		nvtokenEnqueue(stream, ubo);
-		ubo.setBinding(UBO_OBJECT, NVTOKEN_STAGE_FRAGMENT);
-		nvtokenEnqueue(stream, ubo);
+		setTokenBuffers(model.get(), stream);
 
 		NVTokenDrawElems  draw;
 		draw.setParams(model->getModel()->getCompiledIndexCount(NvModelPrimType::TRIANGLES));
 		draw.setMode(GL_TRIANGLES);
 		nvtokenEnqueue(stream, draw);
 	}
-	
-	seq.offsets.push_back(offset);
-	seq.sizes.push_back(GLsizei(stream.size() - offset));
-	seq.fbos.push_back(fbos.scene);
-	seq.states.push_back(cmdlist.stateObjectDraw); 
-	
- 	offset = stream.size();
+	pushTokenParameters(seq, offset, stream, fbos.scene, cmdlist.stateObjects[STATE_DRAW]);
 	
 	for (auto & model : models)
 	{
 		if (model->cornerPointsExists())
 		{
-			NVTokenVbo vboCorner;
-			vboCorner.setBinding(0);
-			vboCorner.setBuffer(model->getCornerBufferID("vbo"), model->getCornerBufferID64("vbo"), 0);
-			nvtokenEnqueue(stream, vboCorner);
-
-			NVTokenIbo iboCorner;
-			iboCorner.setType(GL_UNSIGNED_INT);
-			iboCorner.setBuffer(model->getCornerBufferID("ibo"), model->getCornerBufferID64("ibo"));
-			nvtokenEnqueue(stream, iboCorner);
-
-			NVTokenUbo uboCorner;
-			uboCorner.setBuffer(model->getCornerBufferID("ubo"), model->getCornerBufferID64("ubo"), 0, sizeof(ObjectData));
-			uboCorner.setBinding(UBO_OBJECT, NVTOKEN_STAGE_VERTEX);
-			nvtokenEnqueue(stream, uboCorner);
-			uboCorner.setBinding(UBO_OBJECT, NVTOKEN_STAGE_FRAGMENT);
-			nvtokenEnqueue(stream, uboCorner);
+			setTokenBuffers(model.get(), stream, true);
 
 			NVTokenDrawElems drawCorner;
 			drawCorner.setParams(model->getCornerIndices().size());
@@ -396,11 +463,7 @@ void TopazSample::initCommandList()
 			nvtokenEnqueue(stream, drawCorner);
 		}
 	}
-	
-	seq.offsets.push_back(offset);
-	seq.sizes.push_back(GLsizei(stream.size() - offset));
-	seq.fbos.push_back(fbos.scene);
-	seq.states.push_back(cmdlist.stateObjectLinesDraw);
+	pushTokenParameters(seq, offset, stream, fbos.scene, cmdlist.stateObjects[STATE_LINES_DRAW]);
 
 	if (hwsupport)
 	{
@@ -416,8 +479,243 @@ void TopazSample::initCommandList()
 	updateCommandListState();
 }
 
+void TopazSample::initCommandListWeightBlended()
+{
+	if (!isTokenInternalsInited)
+	{
+		hwsupport = init_NV_command_list(sysGetProcAddress) ? true : false;
+		nvtokenInitInternals(hwsupport, bindlessVboUbo);
+
+		isTokenInternalsInited = true;
+	}
+
+	enum States
+	{
+		STATE_CLEAR,
+		STATE_OPAQUE,
+		STATE_TRANSPARENT,
+		STATE_TRASPARENT_LINES,
+		STATE_COMPOSITE,
+		STATES_COUNT
+	};
+
+	if (hwsupport)
+	{
+		for (size_t i = 0; i < STATES_COUNT; i++)
+		{
+			glCreateStatesNV(1, &cmdlist.stateObjectsWeightBlended[i]);
+		}
+
+		glGenBuffers(1, &cmdlist.tokenBufferWeightBlended);
+		glCreateCommandListsNV(1, &cmdlist.tokenCmdListWeightBlended);
+	}
+
+	NVTokenSequence& seq = cmdlist.tokenSequenceWeightBlended;
+	std::string& stream = cmdlist.tokenDataWeightBlended;
+	size_t offset = 0;
+
+	{
+		NVTokenUbo  ubo;
+		ubo.setBuffer(ubos.sceneUbo, ubos.sceneUbo64, 0, sizeof(SceneData));
+		ubo.setBinding(UBO_SCENE, NVTOKEN_STAGE_VERTEX);
+		nvtokenEnqueue(stream, ubo);
+		ubo.setBinding(UBO_SCENE, NVTOKEN_STAGE_FRAGMENT);
+		nvtokenEnqueue(stream, ubo);
+	}
+
+	// 1. render 'background' into framebuffer 'fbos.scene' 
+	{
+		auto& model = models.at(0);
+		setTokenBuffers(model.get(), stream);
+
+		NVTokenDrawElems  draw;
+		draw.setParams(model->getModel()->getCompiledIndexCount(NvModelPrimType::TRIANGLES));
+		draw.setMode(GL_TRIANGLES);
+		nvtokenEnqueue(stream, draw);
+
+		pushTokenParameters(seq, offset, stream, fbos.scene, cmdlist.stateObjectsWeightBlended[STATE_OPAQUE]);
+	}
+
+	// 2. geometry pass OIT 
+	for (auto model = models.begin() + 1; model != models.end(); model++)
+	{
+		// like call glClearBufferfv
+		{
+			NVTokenVbo vbo;
+			vbo.setBinding(0);
+			vbo.setBuffer(fullScreenRectangle.vboFullScreen, fullScreenRectangle.vboFullScreen64, 0);
+			nvtokenEnqueue(stream, vbo);
+
+			NVTokenUbo ubo;
+			ubo.setBuffer(ubos.identityUbo, ubos.identityUbo64, 0, sizeof(IdentityData));
+			ubo.setBinding(UBO_IDENTITY, NVTOKEN_STAGE_VERTEX);
+			nvtokenEnqueue(stream, ubo);
+
+			NVTokenDrawArrays  draw;
+			draw.setParams(4, 0);
+			draw.setMode(GL_TRIANGLE_STRIP);
+			nvtokenEnqueue(stream, draw);
+		}
+		pushTokenParameters(seq, offset, stream, oit->getFramebufferID(), cmdlist.stateObjectsWeightBlended[STATE_CLEAR]);
+
+		// 2. geometry pass
+		{
+			setTokenBuffers((*model).get(), stream);
+
+			NVTokenDrawElems  draw;
+			draw.setParams((*model)->getModel()->getCompiledIndexCount(NvModelPrimType::TRIANGLES));
+			draw.setMode(GL_TRIANGLES);
+			nvtokenEnqueue(stream, draw);
+		}
+		pushTokenParameters(seq, offset, stream, oit->getFramebufferID(), cmdlist.stateObjectsWeightBlended[STATE_TRANSPARENT]);
+
+		{
+			setTokenBuffers((*model).get(), stream, true);
+
+			NVTokenDrawElems  draw;
+			draw.setParams((*model)->getCornerIndices().size());
+			draw.setMode(GL_LINE_STRIP);
+			nvtokenEnqueue(stream, draw);
+		}
+		pushTokenParameters(seq, offset, stream, oit->getFramebufferID(), cmdlist.stateObjectsWeightBlended[STATE_TRASPARENT_LINES]);
+
+		// 3. composite pass
+		{
+			NVTokenVbo vbo;
+			vbo.setBinding(0);
+			vbo.setBuffer(fullScreenRectangle.vboFullScreen, fullScreenRectangle.vboFullScreen64, 0);
+			nvtokenEnqueue(stream, vbo);
+
+			NVTokenUbo ubo;
+			ubo.setBuffer(ubos.identityUbo, ubos.identityUbo64, 0, sizeof(IdentityData));
+			ubo.setBinding(UBO_IDENTITY, NVTOKEN_STAGE_VERTEX);
+			nvtokenEnqueue(stream, ubo);
+
+			NVTokenUbo uboWeightBlended;
+			uboWeightBlended.setBuffer(ubos.weightBlendedUbo, ubos.weightBlendedUbo64, 0, sizeof(WeightBlendedData));
+			uboWeightBlended.setBinding(UBO_OIT, NVTOKEN_STAGE_FRAGMENT);
+			nvtokenEnqueue(stream, uboWeightBlended);
+
+			NVTokenDrawArrays  draw;
+			draw.setParams(4, 0);
+			draw.setMode(GL_TRIANGLE_STRIP);
+			nvtokenEnqueue(stream, draw);
+		}
+		pushTokenParameters(seq, offset, stream, fbos.scene, cmdlist.stateObjectsWeightBlended[STATE_COMPOSITE]);
+	}
+	
+	if (hwsupport)
+	{
+		glNamedBufferStorageEXT(cmdlist.tokenBufferWeightBlended, cmdlist.tokenDataWeightBlended.size(), &cmdlist.tokenDataWeightBlended.at(0), 0);
+
+		cmdlist.tokenSequenceListWeightBlended = cmdlist.tokenSequenceWeightBlended;
+		for (size_t i = 0; i < cmdlist.tokenSequenceListWeightBlended.offsets.size(); i++)
+		{
+			cmdlist.tokenSequenceListWeightBlended.offsets[i] += (GLintptr)&cmdlist.tokenDataWeightBlended.at(0);
+		}
+	}
+	
+	glEnableVertexAttribArray(VERTEX_POS);
+	glVertexAttribFormat(VERTEX_POS, 3, GL_FLOAT, GL_FALSE, 0);
+	glVertexAttribBinding(VERTEX_POS, 0);
+
+	glEnable(GL_DEPTH_TEST);
+
+	// 1. opaque modes
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, fbos.scene);
+
+		shaderPrograms["draw"]->enable();
+
+		glBindVertexBuffer(0, 0, 0, 9 * sizeof(float));
+		glStateCaptureNV(cmdlist.stateObjectsWeightBlended[STATE_OPAQUE], GL_TRIANGLES);
+		
+		shaderPrograms["draw"]->disable();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	glDisable(GL_DEPTH_TEST);
+
+	// like a glClearBufferfv
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, oit->getFramebufferID());
+
+		const GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+		glDrawBuffers(2, drawBuffers);
+
+		shaderPrograms["clear"]->enable();
+
+		glBindVertexBuffer(0, 0, 0, sizeof(nv::vec3f));
+		glStateCaptureNV(cmdlist.stateObjectsWeightBlended[STATE_CLEAR], GL_TRIANGLES);
+
+		shaderPrograms["clear"]->disable();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	// 2. oit first step
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, oit->getFramebufferID());
+
+		// ???
+		//glEnable(GL_POLYGON_STIPPLE);
+		//glPolygonStipple(brushStyle->brushPattern8to32(QtStyles::DiagCrossPattern).data());
+
+		const GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+		glDrawBuffers(2, drawBuffers);
+
+		glEnable(GL_BLEND);
+		glBlendEquation(GL_FUNC_ADD);
+		glBlendFunci(0, GL_ONE, GL_ONE);
+		glBlendFunci(1, GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+
+		shaderPrograms["weightBlended"]->enable();
+
+		glBindVertexBuffer(0, 0, 0, 9 * sizeof(float));
+		glStateCaptureNV(cmdlist.stateObjectsWeightBlended[STATE_TRANSPARENT], GL_TRIANGLES);
+
+		glBindVertexBuffer(0, 0, 0, sizeof(nv::vec3f));
+		glStateCaptureNV(cmdlist.stateObjectsWeightBlended[STATE_TRASPARENT_LINES], GL_LINES);
+
+		shaderPrograms["weightBlended"]->disable();
+
+		// ???
+		//glDisable(GL_POLYGON_STIPPLE);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	// 3. oit second step
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, fbos.scene);
+		glDisable(GL_BLEND);
+
+		shaderPrograms["weightBlendedFinal"]->enable();
+
+		glBindVertexBuffer(0, 0, 0, sizeof(nv::vec3f));
+		glStateCaptureNV(cmdlist.stateObjectsWeightBlended[STATE_COMPOSITE], GL_TRIANGLES);
+
+		shaderPrograms["weightBlendedFinal"]->disable();
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	// compile command list
+	NVTokenSequence& sequenceList = cmdlist.tokenSequenceListWeightBlended;
+	glCommandListSegmentsNV(cmdlist.tokenCmdListWeightBlended, 1);
+	glListDrawCommandsStatesClientNV(cmdlist.tokenCmdListWeightBlended, 0, (const void**)&sequenceList.offsets[0], &sequenceList.sizes[0], &sequenceList.states[0], &sequenceList.fbos[0], int(sequenceList.states.size()));
+	glCompileCommandListNV(cmdlist.tokenCmdListWeightBlended);
+}
+
 void TopazSample::updateCommandListState()
 {
+	enum StateObjects
+	{
+		STATE_DRAW,
+		STATE_GEOMETRY_DRAW,
+		STATE_LINES_DRAW,
+		STATES_COUNT
+	};
+
 	if (cmdlist.state.programIncarnation != cmdlist.captured.programIncarnation)
 	{
 			glBindFramebuffer(GL_FRAMEBUFFER, fbos.scene);
@@ -442,11 +740,11 @@ void TopazSample::updateCommandListState()
 			}
 			
 			shaderPrograms["draw"]->enable();
-			glStateCaptureNV(cmdlist.stateObjectDraw, GL_TRIANGLES);
+			glStateCaptureNV(cmdlist.stateObjects[STATE_DRAW], GL_TRIANGLES);
 
 			glBindVertexBuffer(0, 0, 0, sizeof(nv::vec3f));
 
-			glStateCaptureNV(cmdlist.stateObjectLinesDraw, GL_LINES);
+			glStateCaptureNV(cmdlist.stateObjects[STATE_LINES_DRAW], GL_LINES);
 
 			glDisableVertexAttribArray(VERTEX_POS);
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -472,7 +770,7 @@ void TopazSample::initFramebuffers(int32_t width, int32_t height)
 	if (textures.sceneColor && GLEW_ARB_bindless_texture)
 	{
 		glMakeTextureHandleNonResidentARB(texturesAddress64.sceneColor);
-		glMakeTextureHandleNonResidentARB(texturesAddress64.sceneDepthStencil);
+		glMakeTextureHandleNonResidentARB(texturesAddress64.sceneDepth);
 	}
 
 	if (textures.sceneColor)
@@ -482,17 +780,17 @@ void TopazSample::initFramebuffers(int32_t width, int32_t height)
 	glGenTextures(1, &textures.sceneColor);
 
 	glBindTexture(GL_TEXTURE_RECTANGLE, textures.sceneColor);
-	glTexStorage2D(GL_TEXTURE_RECTANGLE, 1, GL_RGBA8, width, height);
+	glTexStorage2D(GL_TEXTURE_RECTANGLE, 1, GL_RGBA16F, width, height);
 	glBindTexture(GL_TEXTURE_RECTANGLE, 0);
 
-	if (textures.sceneDepthStencil)
+	if (textures.sceneDepth)
 	{
-		glDeleteTextures(1, &textures.sceneDepthStencil);
+		glDeleteTextures(1, &textures.sceneDepth);
 	}
-	glGenTextures(1, &textures.sceneDepthStencil);
+	glGenTextures(1, &textures.sceneDepth);
 
-	glBindTexture(GL_TEXTURE_RECTANGLE, textures.sceneDepthStencil);
-	glTexStorage2D(GL_TEXTURE_RECTANGLE, 1, GL_DEPTH24_STENCIL8, width, height);
+	glBindTexture(GL_TEXTURE_RECTANGLE, textures.sceneDepth);
+	glTexStorage2D(GL_TEXTURE_RECTANGLE, 1, GL_DEPTH_COMPONENT24, width, height);
 	glBindTexture(GL_TEXTURE_RECTANGLE, 0);
 
 	if (fbos.scene)
@@ -503,15 +801,15 @@ void TopazSample::initFramebuffers(int32_t width, int32_t height)
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbos.scene);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_RECTANGLE, textures.sceneColor, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_RECTANGLE, textures.sceneDepthStencil, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_RECTANGLE, textures.sceneDepth, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	if (GLEW_ARB_bindless_texture)
 	{
 		texturesAddress64.sceneColor = glGetTextureHandleARB(textures.sceneColor);
-		texturesAddress64.sceneDepthStencil = glGetTextureHandleARB(textures.sceneDepthStencil);
+		texturesAddress64.sceneDepth = glGetTextureHandleARB(textures.sceneDepth);
 		glMakeTextureHandleResidentARB(texturesAddress64.sceneColor);
-		glMakeTextureHandleResidentARB(texturesAddress64.sceneDepthStencil);
+		glMakeTextureHandleResidentARB(texturesAddress64.sceneDepth);
 	}
 
 	cmdlist.state.fboIncarnation++;
@@ -524,11 +822,27 @@ void TopazSample::drawStandard()
 	glPolygonOffset(1, 1);
 
 	glBindBufferBase(GL_UNIFORM_BUFFER, UBO_SCENE, ubos.sceneUbo);
+	
+	shaderPrograms["draw"]->enable();
+	{
+		const char* uniformNames[] = { "objectData.objectID", "objectData.objectColor", "objectData.skybox", "objectData.pattern" };
+
+		std::unique_ptr<GLint>  parameters(new GLint[4]);
+		std::unique_ptr<GLuint> uniformIndices(new GLuint[4]);
+
+		glGetUniformIndices(shaderPrograms["draw"]->getProgram(), 4, uniformNames, uniformIndices.get());
+		glGetActiveUniformsiv(shaderPrograms["draw"]->getProgram(), 4, uniformIndices.get(), GL_UNIFORM_OFFSET, parameters.get());
+
+		GLint* offset = parameters.get();
+		CHECK_GL_ERROR();
+	}
 
 	for (auto & model : models)
 	{
 		drawModel(GL_TRIANGLES, *shaderPrograms["draw"], *model);
 	}
+
+	CHECK_GL_ERROR();
 }
 
 void TopazSample::drawModel(GLenum mode, NvGLSLProgram& program, TopazGLModel& model)
@@ -540,12 +854,14 @@ void TopazSample::drawModel(GLenum mode, NvGLSLProgram& program, TopazGLModel& m
 
 	program.enable();
 
+	program.bindTextureRect("pattern", 0, brushStyle->getTextureId());
+
 	glBindBufferRange(GL_UNIFORM_BUFFER, UBO_OBJECT, model.getBufferID("ubo"), 0, sizeof(ObjectData));
 
 	glBindVertexBuffer(0, model.getBufferID("vbo"), 0, model.getModel()->getCompiledVertexSize() * sizeof(float));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.getBufferID("ibo"));
 	glDrawElements(mode, model.getModel()->getCompiledIndexCount(NvModelPrimType::TRIANGLES), GL_UNSIGNED_INT, nullptr);
-
+	
 	if (model.cornerPointsExists())
 	{
 		glBindBufferRange(GL_UNIFORM_BUFFER, UBO_OBJECT, model.getCornerBufferID("ubo"), 0, sizeof(ObjectData));
@@ -555,7 +871,7 @@ void TopazSample::drawModel(GLenum mode, NvGLSLProgram& program, TopazGLModel& m
 
 		glDrawElements(GL_LINE_STRIP, model.getCornerIndices().size(), GL_UNSIGNED_INT, nullptr);
 	}
-
+	
 	program.disable();
 
 	glDisableVertexAttribArray(VERTEX_POS);
@@ -568,11 +884,9 @@ void TopazSample::renderStandartWeightedBlendedOIT()
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_POLYGON_OFFSET_FILL);
 
-	glLineWidth(2.0f);
-
 	glBindBufferBase(GL_UNIFORM_BUFFER, UBO_SCENE, ubos.sceneUbo);
+	glBindBufferBase(GL_UNIFORM_BUFFER, UBO_IDENTITY, ubos.identityUbo);
 
-	/* draw opaque models (GL_TEXTURE_2D) -> change to (GL_TEXTURE_RECTANGLE) */
 	glBindFramebuffer(GL_FRAMEBUFFER, fbos.scene);
 	drawModel(GL_TRIANGLES, *shaderPrograms["draw"], *models.at(0));
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -631,14 +945,27 @@ void TopazSample::renderStandartWeightedBlendedOIT()
 				GLint* offset = parameters.get();
 			}
 
-			objectData.objectColor = nv::vec4f(1.0f, 1.0f, 1.0f, oit->getOpacity());
-			glNamedBufferSubDataEXT((*model)->getBufferID("ubo"), 0, sizeof(ObjectData), &objectData);
+			{
+				shaderPrograms["weightBlendedFinal"]->enable();
 
-			drawModel(GL_TRIANGLES, *shaderPrograms["weightBlendedFinal"], **model);
+				glVertexAttribFormat(VERTEX_POS, 3, GL_FLOAT, GL_FALSE, 0);
 
+				glVertexAttribBinding(VERTEX_POS, 0);
+				glEnableVertexAttribArray(VERTEX_POS);
+
+				glBindVertexBuffer(0, fullScreenRectangle.vboFullScreen, 0, sizeof(nv::vec3f));
+				glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+				shaderPrograms["weightBlendedFinal"]->disable();
+			}
 			CHECK_GL_ERROR();
 		}
 	}
+}
+
+void TopazSample::renderTokenListWeightedBlendedOIT()
+{
+
 }
 
 NvAppBase* NvAppFactory(NvPlatformContext* platform)
